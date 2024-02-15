@@ -1,0 +1,10 @@
+.container{
+  align-items: center;
+  margin-left: 600px;
+  background-color: #1111;
+}
+
+.loading{
+  background-color: white;
+  color:black;
+}
