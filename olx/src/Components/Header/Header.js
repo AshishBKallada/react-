@@ -19,6 +19,9 @@ function Header() {
   const handleLogout=() => {
     signOut(auth).then(() => {navigate('/login')})
   }
+  const handleSellClick=() => {
+    navigate('/create')
+  }
   return (
     <div className="headerParentDiv">
       <div className="headerChildDiv">
@@ -55,7 +58,7 @@ function Header() {
           <SellButton></SellButton>
           <div className="sellMenuContent">
             <SellButtonPlus></SellButtonPlus>
-            <span>SELL</span>
+            <span onClick={handleSellClick}>SELL</span>
           </div>
         </div>
       </div>

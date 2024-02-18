@@ -6,6 +6,7 @@ export default FirebaseContext;
 
 export const AuthContext = createContext(null)
 
+
 export const Context = ({children})=>{
     const [user,setUser] = useState(null)
 

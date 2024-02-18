@@ -11,11 +11,19 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [usernameError, setUsernameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const navigate = useNavigate();
   const { auth, firestore } = useContext(FirebaseContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       const userData = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userData.user, { displayName: username });
@@ -24,13 +32,47 @@ export default function Signup() {
       await setDoc(userDocRef, {
         email: email,
         phone: phone,
-        username:username,
+        username: username,
       });
 
       navigate('/login');
     } catch (error) {
       console.error('Error signing up:', error.message);
     }
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+
+    if (!username) {
+      setUsernameError('Username is required');
+      isValid = false;
+    } else {
+      setUsernameError('');
+    }
+
+    if (!email) {
+      setEmailError('Email is required');
+      isValid = false;
+    } else {
+      setEmailError('');
+    }
+
+    if (!phone) {
+      setPhoneError('Phone number is required');
+      isValid = false;
+    } else {
+      setPhoneError('');
+    }
+
+    if (!password) {
+      setPasswordError('Password is required');
+      isValid = false;
+    } else {
+      setPasswordError('');
+    }
+
+    return isValid;
   };
 
   return (
@@ -49,6 +91,8 @@ export default function Signup() {
             name="username"
             placeholder="Enter your username"
           />
+          {usernameError && <div style={{'color':'red'}} className="error">{usernameError}</div>}
+
           <br />
           <label htmlFor="email">Email</label>
           <br />
@@ -61,6 +105,8 @@ export default function Signup() {
             name="email"
             placeholder="Enter your email"
           />
+          {emailError && <div style={{'color':'red'}} className="error">{emailError}</div>}
+
           <br />
           <label htmlFor="phone">Phone</label>
           <br />
@@ -73,6 +119,8 @@ export default function Signup() {
             name="phone"
             placeholder="Enter your phone number"
           />
+          {phoneError && <div style={{'color':'red'}} className="error">{phoneError}</div>}
+
           <br />
           <label htmlFor="password">Password</label>
           <br />
@@ -85,6 +133,8 @@ export default function Signup() {
             name="password"
             placeholder="Enter your password"
           />
+          {passwordError && <div style={{'color':'red'}} className="error">{passwordError}</div>}
+
           <br />
           <br />
           <button type="submit">Signup</button>
